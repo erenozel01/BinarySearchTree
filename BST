@@ -1,0 +1,100 @@
+package binarysil;
+
+
+class BinarySil {
+    int info;
+    BinarySil left;
+    BinarySil right;
+
+    public BinarySil(int info){
+        this.info = info;
+        left = null;
+        right = null;
+    }
+
+    public void displayNode(){
+        System.out.print(this.info);
+    }
+}
+
+
+
+public class BinaryTreeOperations{
+
+    BinarySil rootNode;
+
+    public BinaryTreeOperations(){
+        rootNode = null;
+        rootNode = insertTreeNodes(rootNode, 7); //root node
+        insertTreeNodes(rootNode, 4); // inserts the next following elements in BST ordered.
+        insertTreeNodes(rootNode, 1);
+        insertTreeNodes(rootNode, 8);
+        insertTreeNodes(rootNode, 10);
+        insertTreeNodes(rootNode, 2);
+        insertTreeNodes(rootNode, 21);
+        insertTreeNodes(rootNode, 5);
+
+        inOrderTraversal(rootNode);
+
+        System.out.print("Deleted Node: " );
+        delete(rootNode, 8).displayNode();
+        System.out.println();
+        inOrderTraversal(rootNode);
+    }
+
+    public BinarySil delete(BinarySil root, int key){
+        if(root == null)
+            return root;
+        if(key < root.info)
+            root.left = delete(root.left, key);
+        else if(key > root.info)
+            root.right = delete(root.right, key);
+        else{
+            if(root.left != null && root.right != null){
+                root.info = findMin(root.right).info;
+                root.right = delete(root.right, root.info);
+            }
+            else
+                root = (root.left != null) ? root.left : root.right;
+        }
+        return root;
+    }
+
+    private BinarySil findMin(BinarySil root) {
+        if(root != null){
+            while(root.left != null){
+                root = root.left;
+            }
+        }
+        return root;
+    }
+
+    public void inOrderTraversal(BinarySil root){
+        if(root == null)
+            return;
+        else{
+            inOrderTraversal(root.left);
+            root.displayNode();
+            System.out.print(", ");
+            inOrderTraversal(root.right);
+        }
+    }
+
+
+    public BinarySil insertTreeNodes(BinarySil root, int data){
+
+        if(root == null) {
+            root = new BinarySil(data);
+            root.left = root.right = null;
+        }
+        else if(data <= root.info)
+            root.left = insertTreeNodes(root.left, data);
+        else
+            root.right = insertTreeNodes(root.right, data);
+        return root;
+    }
+
+    public static void main(String[] args) {
+        BinaryTreeOperations treeOperation = new BinaryTreeOperations();
+    }
+}
